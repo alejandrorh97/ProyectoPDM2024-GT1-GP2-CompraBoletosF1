@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="40dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:layout_marginHorizontal="40dp"
     tools:context=".SignupActivity">
 
     <TextView
@@ -25,6 +25,7 @@
         android:text="Email"
         android:textColor="#CEFFFFFF"
         android:textSize="16sp" />
+    s
 
     <EditText
         android:id="@+id/etEmail"
@@ -32,6 +33,7 @@
         android:layout_height="36dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/edit_text_bg"
+        android:inputType="textEmailAddress"
         android:padding="4dp"
         android:textColor="@color/white" />
 
@@ -50,6 +52,7 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/edit_text_bg"
         android:padding="4dp"
+        android:singleLine="true"
         android:textColor="@color/white" />
 
     <TextView
@@ -61,11 +64,12 @@
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/etContrasena"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/edit_text_bg"
+        android:inputType="textPassword"
         android:padding="4dp"
         android:textColor="@color/white" />
 
@@ -78,16 +82,17 @@
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/etConfirmarContrasena"
+        android:id="@+id/etRePassword"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/edit_text_bg"
+        android:inputType="textPassword"
         android:padding="4dp"
         android:textColor="@color/white" />
 
     <Button
-        android:id="@+id/btnRegistrarse"
+        android:id="@+id/bRegistrarse"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="48dp"

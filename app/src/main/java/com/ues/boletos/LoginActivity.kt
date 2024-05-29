@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat
 class LoginActivity : AppCompatActivity() {
     private lateinit var bLogin: Button
     private lateinit var bRegister: Button
+    private lateinit var etEmail: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var dbHelper: DBHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        dbHelper = DBHelper(this)
         initComponents()
         initListener()
     }
@@ -29,16 +35,29 @@ class LoginActivity : AppCompatActivity() {
     private fun initComponents() {
         bLogin = findViewById(R.id.bLogin)
         bRegister = findViewById(R.id.bRegister)
+        etEmail = findViewById(R.id.etEmail)
+        etPassword = findViewById(R.id.etPassword)
     }
 
     private fun initListener() {
         bLogin.setOnClickListener {
-            val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("isLoggedIn", true) // Cambia esto a lo que quieras
-            editor.apply()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            val email = etEmail.text.toString()
+            val password = etPassword.text.toString()
+            try {
+                if(dbHelper.verificarUsuario(email, password)) {
+                    Toast.makeText(this, "Bienvenido de vuelta!", Toast.LENGTH_SHORT).show()
+                    val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("isLoggedIn", true) // Cambia esto a lo que quieras
+                    editor.apply()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
+            }
         }
         bRegister.setOnClickListener { startActivity(Intent(this, SignupActivity::class.java)) }
     }
