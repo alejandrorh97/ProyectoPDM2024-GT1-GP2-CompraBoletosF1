@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="40dp"
+    tools:context=".SignupActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="¿Nuevo en la tienda de venta de entradas de la Formula 1?"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Email"
+        android:textColor="#CEFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Nombre"
+        android:textColor="#CEFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etNombre"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Contraseña"
+        android:textColor="#CEFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etContrasena"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Confirmar contraseña"
+        android:textColor="#CEFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etConfirmarContrasena"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="4dp" />
+
+    <Button
+        android:id="@+id/btnRegistrarse"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_bg"
+        android:text="Registrarse"
+        android:textColor="#CEFFFFFF"
+        android:textSize="16sp"
+        android:layout_marginTop="48dp"
+        app:cornerRadius="32dp" />
+</LinearLayout>

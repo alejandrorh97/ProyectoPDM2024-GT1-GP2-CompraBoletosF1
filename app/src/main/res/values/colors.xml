@@ -4,7 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#15151d</color>
     <color name="primary">#e10600</color>
-    <!--    TailwindCSS Colors-->
+
+    <!--    Others Colors-->
     <color name="slate_50">#F8FAFC</color>
     <color name="slate_100">#F1F5F9</color>
     <color name="slate_200">#E2E8F0</color>
