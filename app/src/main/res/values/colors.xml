@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#15151d</color>
     <color name="primary">#e10600</color>
+    <color name="bg_btn">#e10600</color>
 
     <!--    Others Colors-->
     <color name="slate_50">#F8FAFC</color>
