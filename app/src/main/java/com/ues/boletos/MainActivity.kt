@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_admin -> {
                 val intent = Intent(this, AdminActivity::class.java)
                 startActivity(intent)
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)
