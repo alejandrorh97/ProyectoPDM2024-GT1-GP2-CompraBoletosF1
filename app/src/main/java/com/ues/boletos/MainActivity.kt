@@ -16,6 +16,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.ues.boletos.admin.AdminActivity
 import com.ues.boletos.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -72,6 +73,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_logout -> {
                 logout()
+                true
+            }
+            R.id.action_admin -> {
+                val intent = Intent(this, AdminActivity::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

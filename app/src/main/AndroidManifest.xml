@@ -13,9 +13,9 @@
         android:theme="@style/SplashTheme"
         tools:targetApi="31">
         <activity
-            android:name=".NavigationDrawerActivity"
+            android:name=".admin.AdminActivity"
             android:exported="false"
-            android:label="@string/title_activity_navigation_drawer"
+            android:label="@string/title_activity_admin"
             android:theme="@style/SplashTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
