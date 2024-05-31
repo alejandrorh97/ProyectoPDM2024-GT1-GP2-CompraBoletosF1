@@ -10,13 +10,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ues.boletos.services.UserService
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var bLogin: Button
     private lateinit var bRegister: Button
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
-    private lateinit var dbHelper: DBHelper
+    private lateinit var userService: UserService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        dbHelper = DBHelper(this)
+        userService = UserService(this)
         initComponents()
         initListener()
     }
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
             try {
-                if(dbHelper.verificarUsuario(email, password)) {
+                if(userService.verificarUsuario(email, password)) {
                     Toast.makeText(this, "Bienvenido de vuelta!", Toast.LENGTH_SHORT).show()
                     val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()

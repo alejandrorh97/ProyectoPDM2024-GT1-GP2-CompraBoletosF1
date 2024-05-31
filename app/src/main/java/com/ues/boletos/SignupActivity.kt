@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ues.boletos.services.UserService
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var bRegistrarse: Button
@@ -17,7 +18,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var etNombre: EditText
     private lateinit var etPassword: EditText
     private lateinit var etRePassword: EditText
-    private lateinit var dbHelper: DBHelper
+    private lateinit var userService: UserService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class SignupActivity : AppCompatActivity() {
             insets
         }
 
-        dbHelper = DBHelper(this)
+        userService = UserService(this)
         initComponents()
         initListener()
     }
@@ -56,12 +57,12 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(dbHelper.existeUsuario(email)) {
+            if(userService.existeUsuario(email)) {
                 Toast.makeText(this, "El usuario ya existe", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             try {
-                dbHelper.insertUsuario(nombre, email, password)
+//                userService.insertUsuario(new NewUser())
                 Toast.makeText(this, "Bienvenido $nombre!", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()

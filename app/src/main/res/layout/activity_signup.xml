@@ -1,106 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/mainScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="40dp"
-    android:gravity="center"
-    android:orientation="vertical"
     tools:context=".SignupActivity">
 
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="¿Nuevo en la tienda de venta de entradas de la Formula 1?"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".SignupActivity">
+        <!--
+        data class NewUser(
+            val email: String,
+            val nombre: String,
+            val apellido: String,
+            val telefono: String,
+            val fechaNacimiento: String,
+            val sexo: String, // Hombre, Mujer
+            val password: String
+        )
+        -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="130dp"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@mipmap/f1_logo" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:text="¿Nuevo en la tienda de venta de entradas de la Formula 1?"
+            android:textSize="24sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Email"
-        android:textColor="#CEFFFFFF"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="Email"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="emailAddress"
-        android:background="@drawable/edit_text_bg"
-        android:inputType="textEmailAddress"
-        android:padding="4dp"
-        android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints="emailAddress"
+            android:inputType="textEmailAddress"
+            android:padding="4dp"
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Nombre"
-        android:textColor="#CEFFFFFF"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Nombre"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etNombre"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="12dp"
-        android:autofillHints="name"
-        android:background="@drawable/edit_text_bg"
-        android:padding="4dp"
-        android:singleLine="true"
-        android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints="name"
+            android:padding="4dp"
+            android:singleLine="true"
+             />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Contraseña"
-        android:textColor="#CEFFFFFF"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Apellido"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/edit_text_bg"
-        android:inputType="textPassword"
-        android:padding="4dp"
-        android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/etApellido"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints="name"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textColor="@color/white" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="Confirmar contraseña"
-        android:textColor="#CEFFFFFF"
-        android:textSize="16sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Teléfono"
+            android:textSize="16sp" />
 
-    <EditText
-        android:id="@+id/etRePassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/edit_text_bg"
-        android:inputType="textPassword"
-        android:padding="4dp"
-        android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/etTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints="tel"
+            android:inputType="phone"
+            android:padding="4dp"
+            android:singleLine="true"
+            />
 
-    <Button
-        android:id="@+id/bRegistrarse"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/button_bg"
-        android:text="Crear cuenta"
-        android:textAllCaps="true"
-        android:textColor="#CEFFFFFF"
-        android:textSize="16sp"
-        app:cornerRadius="32dp" />
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Fecha de nacimiento"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnFechaNacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textAllCaps="false"
+            android:textAlignment="textStart"
+            android:textStyle="normal"
+            android:textColor="@color/gray"
+            android:background="#00FFFFFF"
+            android:text="Seleccionar fecha"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Sexo"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spSexo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+
+            android:layout_marginBottom="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Contraseña"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:inputType="textPassword"
+            android:padding="4dp"
+             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="5dp"
+            android:text="Confirmar contraseña"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etRePassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:inputType="textPassword"
+            android:padding="4dp"
+             />
+
+        <Button
+            android:id="@+id/bRegistrarse"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="100dp"
+            android:text="Crear cuenta"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            app:cornerRadius="32dp" />
+    </LinearLayout>
+</ScrollView>
