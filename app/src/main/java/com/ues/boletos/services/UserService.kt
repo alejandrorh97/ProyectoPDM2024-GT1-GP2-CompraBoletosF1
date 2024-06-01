@@ -20,8 +20,6 @@ class UserService(private val context: Context) {
                 put("sexo", user.sexo)
                 put("password", user.password)
                 put("rol_id", 2)
-                //obtener fecha actual en formato yyyy-MM-dd HH:mm:ss
-                put("created_at", "datetime('now')")
             }
             val newRowId = db.insertOrThrow("users", null, values)
             newRowId != -1L
