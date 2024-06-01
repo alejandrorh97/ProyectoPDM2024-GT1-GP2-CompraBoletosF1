@@ -34,4 +34,24 @@
         android:name="com.ues.boletos.admin.ui.circuitos.CrearCircuitoFragment"
         android:label="Crear Circuito"
         tools:layout="@layout/fragment_crear_circuito" />
+    <fragment
+        android:id="@+id/nav_equipos"
+        android:name="com.ues.boletos.admin.ui.equipos.EquiposFragment"
+        android:label="Equipos"
+        tools:layout="@layout/fragment_equipos" />
+    <fragment
+        android:id="@+id/nav_editar_equipo"
+        android:name="com.ues.boletos.admin.ui.equipos.EditarEquipoFragment"
+        android:label="Editar Equipo"
+        tools:layout="@layout/fragment_editar_equipo" />
+    <fragment
+        android:id="@+id/nav_crear_equipo"
+        android:name="com.ues.boletos.admin.ui.equipos.CrearEquipoFragment"
+        android:label="Crear Equipo"
+        tools:layout="@layout/fragment_crear_equipo" />
+    <fragment
+        android:id="@+id/nav_pilotos"
+        android:name="com.ues.boletos.admin.ui.pilotos.PilotosFragment"
+        android:label="Pilotos"
+        tools:layout="@layout/fragment_pilotos" />
 </navigation>
