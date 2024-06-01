@@ -14,7 +14,7 @@ class CarreraAdapter(
     private val onButtonClickListener: OnButtonClickListener
 ) : ArrayAdapter<Carrera>(context, R.layout.list_carrera_item, carreras) {
     interface OnButtonClickListener {
-        fun onModificarClick(alumno: Carrera)
+        fun onModificarClick(carrera: Carrera)
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater

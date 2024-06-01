@@ -58,16 +58,13 @@ class CarrerasFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_carreras, container, false)
         initComponents(view)
         initUI()
-//        initListeners()
+        initListeners()
         return view
     }
 
     fun initComponents(view: View) {
         lvCarreras = view.findViewById(R.id.lvCarreras)
         fabCrear = view.findViewById(R.id.fabCrearCarrera)
-        fabCrear.setOnClickListener {
-            findNavController().navigate(R.id.nav_crear_carrera)
-        }
     }
 
     fun initUI() {
@@ -78,20 +75,17 @@ class CarrerasFragment : Fragment() {
             carreras,
             object : CarreraAdapter.OnButtonClickListener {
                 override fun onModificarClick(carrera: Carrera) {
-                    onSelectCarrera(carrera)
+                    findNavController().navigate(R.id.nav_editar_carrera, Bundle().apply {
+                        putInt("idCarrera", carrera.id)
+                    })
                 }
             })
     }
 
-    fun onSelectCarrera(carrera: Carrera) {
-        Toast.makeText(
-            requireActivity(),
-            "Carrera seleccionada: ${carrera.circuito?.nombre}",
-            Toast.LENGTH_SHORT
-        ).show()
-        findNavController().navigate(R.id.nav_editar_carrera, Bundle().apply {
-            putInt("idCarrera", carrera.id)
-        })
+    fun initListeners() {
+        fabCrear.setOnClickListener {
+            findNavController().navigate(R.id.nav_crear_carrera)
+        }
     }
 
     companion object {
