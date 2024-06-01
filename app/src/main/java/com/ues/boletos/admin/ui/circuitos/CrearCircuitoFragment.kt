@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
 import com.ues.boletos.models.Circuito
+import com.ues.boletos.models.NewCircuito
 import com.ues.boletos.services.CircuitoService
 
 // TODO: Rename parameter arguments, choose names that match
@@ -20,10 +21,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [EditarCircuitoFragment.newInstance] factory method to
+ * Use the [CrearCircuitoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditarCircuitoFragment : Fragment() {
+class CrearCircuitoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,38 +36,15 @@ class EditarCircuitoFragment : Fragment() {
     private lateinit var etUbicacion: EditText
     private lateinit var etUrlGoogleMaps: EditText
     private lateinit var bGuardar: Button
-    private lateinit var circuito: Circuito
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var idCircuito: Int? = null
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-            idCircuito = it.getInt("idCircuito")
         }
         dbHelper = DBHelper(requireContext())
         circuitoService = CircuitoService(dbHelper)
-        if (idCircuito != null) {
-            val result = circuitoService.getCircuitoById(idCircuito!!)
-            if (result != null) {
-                circuito = result
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "No se ha encontrado el circuito",
-                    Toast.LENGTH_SHORT
-                ).show()
-                requireActivity().supportFragmentManager.popBackStack()
-            }
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "No se ha seleccionado un circuito",
-                Toast.LENGTH_SHORT
-            ).show()
-            requireActivity().supportFragmentManager.popBackStack()
-        }
     }
 
     override fun onCreateView(
@@ -74,7 +52,7 @@ class EditarCircuitoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_editar_circuito, container, false)
+        val view = inflater.inflate(R.layout.fragment_crear_circuito, container, false)
         initComponents(view)
         initUI()
         initListeners()
@@ -90,13 +68,7 @@ class EditarCircuitoFragment : Fragment() {
         bGuardar = view.findViewById(R.id.bGuardar)
     }
 
-    private fun initUI() {
-        etNombre.setText(circuito.nombre)
-        etLongitud.setText(circuito.longitud.toString())
-        etCurvas.setText(circuito.curvas.toString())
-        etUbicacion.setText(circuito.ubicacion)
-        etUrlGoogleMaps.setText(circuito.urlGoogleMaps)
-    }
+    private fun initUI() {}
 
     private fun initListeners() {
         bGuardar.setOnClickListener { saveCircuito() }
@@ -105,25 +77,25 @@ class EditarCircuitoFragment : Fragment() {
     private fun saveCircuito() {
         // todo: validar campos
         try {
-            val nombre = etNombre.text.toString()
-            val longitud = etLongitud.text.toString().toFloat()
-            val curvas = etCurvas.text.toString().toInt()
-            val ubicacion = etUbicacion.text.toString()
-            val urlGoogleMaps = etUrlGoogleMaps.text.toString()
-            val circuito = Circuito(circuito.id, nombre, longitud, curvas, ubicacion, urlGoogleMaps)
-            if (circuitoService.updateCircuit(circuito)) {
-                Toast.makeText(requireContext(), "Circuito actualizado", Toast.LENGTH_SHORT).show()
+            val newCircuito = NewCircuito(
+                etNombre.text.toString(),
+                etLongitud.text.toString().toFloat(),
+                etCurvas.text.toString().toInt(),
+                etUbicacion.text.toString(),
+                etUrlGoogleMaps.text.toString()
+            )
+            if (circuitoService.insertCircuito(newCircuito)) {
+                Toast.makeText(requireContext(), "Circuito creado", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             } else {
-                Toast.makeText(requireContext(), "Error al actualizar el circuito", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Error al crear el circuito", Toast.LENGTH_SHORT)
                     .show()
             }
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Error al actualizar el circuito", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(requireContext(), "Error al crear el circuito", Toast.LENGTH_SHORT).show()
             Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-
         }
+
     }
 
     companion object {
@@ -133,12 +105,12 @@ class EditarCircuitoFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment EditarCircuitoFragment.
+         * @return A new instance of fragment CrearCircuitoFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            EditarCircuitoFragment().apply {
+            CrearCircuitoFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

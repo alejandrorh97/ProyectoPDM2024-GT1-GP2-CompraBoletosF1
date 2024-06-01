@@ -78,7 +78,7 @@ class CircuitosFragment : Fragment() {
 
     private fun initListeners() {
         fabCrearCircuito.setOnClickListener {
-            Toast.makeText(requireContext(), "Crear circuito", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.nav_crear_circuito)
         }
     }
 

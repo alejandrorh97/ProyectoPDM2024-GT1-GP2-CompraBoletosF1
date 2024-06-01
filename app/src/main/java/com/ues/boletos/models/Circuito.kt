@@ -12,3 +12,10 @@ data class Circuito(
         return nombre
     }
 }
+
+data class NewCircuito(
+    val nombre: String,
+    val longitud: Float,
+    val curvas: Int,
+    val ubicacion: String,
+    val urlGoogleMaps: String?)

@@ -122,20 +122,26 @@ class CrearCarreraFragment : Fragment() {
     }
 
     private fun saveCarrera() {
-        val circuito = spCircuito.selectedItem as Circuito
-        val vueltas = etVueltas.text.toString().toInt()
-        val carrera = NewCarrera(
-            circuitoId = circuito.id,
-            fecha = "$fecha $hora",
-            vueltas = vueltas
-        )
-        val result = carreraService.insertCarrera(carrera)
-        if (result) {
-            Toast.makeText(requireContext(), "Carrera creada", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
-        } else {
-            Toast.makeText(requireContext(), "Error al crear carrera", Toast.LENGTH_SHORT)
-                .show()
+        // todo: validar campos
+        try {
+            val circuito = spCircuito.selectedItem as Circuito
+            val vueltas = etVueltas.text.toString().toInt()
+            val carrera = NewCarrera(
+                circuitoId = circuito.id,
+                fecha = "$fecha $hora",
+                vueltas = vueltas
+            )
+            val result = carreraService.insertCarrera(carrera)
+            if (result) {
+                Toast.makeText(requireContext(), "Carrera creada", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(requireContext(), "Error al crear carrera", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al crear carrera", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 

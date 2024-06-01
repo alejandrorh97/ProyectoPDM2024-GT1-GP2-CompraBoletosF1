@@ -3,6 +3,7 @@ package com.ues.boletos.services
 import android.content.Context
 import com.ues.boletos.DBHelper
 import com.ues.boletos.models.Circuito
+import com.ues.boletos.models.NewCircuito
 
 class CircuitoService(private val dbHelper: DBHelper) {
     fun getCircuitos(): ArrayList<Circuito> {
@@ -58,6 +59,18 @@ class CircuitoService(private val dbHelper: DBHelper) {
         val db = dbHelper.writableDatabase
         return try {
             db.execSQL("UPDATE circuitos SET nombre = '${circuito.nombre}', longitud = ${circuito.longitud}, curvas = ${circuito.curvas}, ubicacion = '${circuito.ubicacion}', url_google_maps = '${circuito.urlGoogleMaps}' WHERE id = ${circuito.id}")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
+            db.close()
+        }
+    }
+
+    fun insertCircuito(circuito: NewCircuito): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("INSERT INTO circuitos (nombre, longitud, curvas, ubicacion, url_google_maps) VALUES ('${circuito.nombre}', ${circuito.longitud}, ${circuito.curvas}, '${circuito.ubicacion}', '${circuito.urlGoogleMaps}')")
             true
         } catch (e: Exception) {
             false

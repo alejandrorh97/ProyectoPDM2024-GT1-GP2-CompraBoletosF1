@@ -149,18 +149,24 @@ class EditarCarreraFragment : Fragment() {
     }
 
     private fun saveCarrera() {
-        val circuito = spCircuito.selectedItem as Circuito
-        val vueltas = etVueltas.text.toString().toInt()
-        carrera.circuitoId = circuito.id
-        carrera.fecha = "$fecha $hora"
-        carrera.vueltas = vueltas
-        val result = carreraService.updateCarrera(carrera)
-        if (result) {
-            Toast.makeText(requireContext(), "Carrera actualizada", Toast.LENGTH_SHORT).show()
-            requireActivity().supportFragmentManager.popBackStack()
-        } else {
-            Toast.makeText(requireContext(), "Error al actualizar carrera", Toast.LENGTH_SHORT)
-                .show()
+        // todo: validar campos
+        try {
+            val circuito = spCircuito.selectedItem as Circuito
+            val vueltas = etVueltas.text.toString().toInt()
+            carrera.circuitoId = circuito.id
+            carrera.fecha = "$fecha $hora"
+            carrera.vueltas = vueltas
+            val result = carreraService.updateCarrera(carrera)
+            if (result) {
+                Toast.makeText(requireContext(), "Carrera actualizada", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(requireContext(), "Error al actualizar carrera", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al actualizar carrera", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
