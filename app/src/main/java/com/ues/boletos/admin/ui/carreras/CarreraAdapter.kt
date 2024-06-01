@@ -26,6 +26,7 @@ class CarreraAdapter(
         val fechaCarrera: TextView = rowView.findViewById(R.id.fechaCarrera)
         val vueltasCarrera: TextView = rowView.findViewById(R.id.vueltasCarrera)
         val bEditarCarrera: Button = rowView.findViewById(R.id.bEditarCarrera)
+        val tvDistanciaCarrera: TextView = rowView.findViewById(R.id.tvDistanciaCarrera)
 
         val carrera = carreras[position]
         nombreCircuito.text = carrera.circuito?.nombre
@@ -33,6 +34,7 @@ class CarreraAdapter(
         longitudCircuito.text = "${carrera.circuito?.longitud} km"
         fechaCarrera.text = carrera.fecha
         vueltasCarrera.text = carrera.vueltas.toString()
+        tvDistanciaCarrera.text = "${carrera.vueltas * carrera.circuito?.longitud!!} km"
 
         bEditarCarrera.setOnClickListener {
             onButtonClickListener.onModificarClick(carrera)
