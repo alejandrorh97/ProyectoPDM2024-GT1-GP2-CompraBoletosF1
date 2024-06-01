@@ -10,15 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="50dp"
         android:padding="32dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="48dp"
-            android:text="Editar Carrera"
-            android:textAlignment="center"
-            android:textSize="24sp" />
 
         <TextView
             android:layout_width="match_parent"

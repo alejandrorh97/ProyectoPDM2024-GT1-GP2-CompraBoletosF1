@@ -12,5 +12,16 @@
     <fragment
         android:id="@+id/nav_editar_carrera"
         android:name="com.ues.boletos.admin.ui.carreras.EditarCarreraFragment"
+        android:label="Editar Carrera"
         tools:layout="@layout/fragment_editar_carrera" />
+    <fragment
+        android:id="@+id/nav_crear_carrera"
+        android:name="com.ues.boletos.admin.ui.carreras.CrearCarreraFragment"
+        android:label="Crear Carrera"
+        tools:layout="@layout/fragment_crear_carrera" />
+    <fragment
+        android:id="@+id/nav_circuitos"
+        android:name="com.ues.boletos.admin.ui.circuitos.CircuitosFragment"
+        android:label="Circuitos"
+        tools:layout="@layout/fragment_circuitos" />
 </navigation>

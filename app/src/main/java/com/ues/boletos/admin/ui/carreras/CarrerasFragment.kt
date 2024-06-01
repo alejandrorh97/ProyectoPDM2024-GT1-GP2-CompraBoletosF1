@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
 import com.ues.boletos.databinding.FragmentCarrerasBinding
@@ -33,6 +35,7 @@ class CarrerasFragment : Fragment() {
     private lateinit var binding: FragmentCarrerasBinding
     private lateinit var dbHelper: DBHelper
     private lateinit var carreraService: CarreraService
+    private lateinit var fabCrear: FloatingActionButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +55,19 @@ class CarrerasFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_carreras, container, false)
-        lvCarreras = rootView.findViewById(R.id.lvCarreras)
+        val view = inflater.inflate(R.layout.fragment_carreras, container, false)
+        initComponents(view)
         initUI()
-        return rootView
+//        initListeners()
+        return view
+    }
+
+    fun initComponents(view: View) {
+        lvCarreras = view.findViewById(R.id.lvCarreras)
+        fabCrear = view.findViewById(R.id.fabCrearCarrera)
+        fabCrear.setOnClickListener {
+            findNavController().navigate(R.id.nav_crear_carrera)
+        }
     }
 
     fun initUI() {
