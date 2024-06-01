@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
 import com.ues.boletos.models.Carrera
+import com.ues.boletos.models.Circuito
 import com.ues.boletos.services.CarreraService
 import com.ues.boletos.services.CircuitoService
 import java.util.Calendar
@@ -99,7 +100,8 @@ class EditarCarreraFragment : Fragment() {
         etVueltas.setText(carrera.vueltas.toString())
         val circuitos = circuitoService.getCircuitos()
         Log.d("Circuitos", circuitos.toString())
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, circuitos)
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, circuitos)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCircuito.adapter = adapter
 
@@ -136,7 +138,7 @@ class EditarCarreraFragment : Fragment() {
         val timePicker = TimePickerDialog(
             requireContext(),
             { view, hourOfDay, minute ->
-                hora = "$hourOfDay:$minute:00"
+                hora = String.format("%02d:%02d:00", hourOfDay, minute)
                 bHora.text = hora
             },
             calendar.get(Calendar.HOUR_OF_DAY),
@@ -147,7 +149,19 @@ class EditarCarreraFragment : Fragment() {
     }
 
     private fun saveCarrera() {
-
+        val circuito = spCircuito.selectedItem as Circuito
+        val vueltas = etVueltas.text.toString().toInt()
+        carrera.circuitoId = circuito.id
+        carrera.fecha = "$fecha $hora"
+        carrera.vueltas = vueltas
+        val result = carreraService.updateCarrera(carrera)
+        if (result) {
+            Toast.makeText(requireContext(), "Carrera actualizada", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+        } else {
+            Toast.makeText(requireContext(), "Error al actualizar carrera", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     companion object {

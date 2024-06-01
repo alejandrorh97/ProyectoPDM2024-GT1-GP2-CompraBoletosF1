@@ -1,9 +1,15 @@
 package com.ues.boletos.models
 
 data class Carrera(
-    val id: Int,
-    val circuitoId: Int,
-    val fecha: String,
-    val vueltas: Int,
+    var id: Int,
+    var circuitoId: Int,
+    var fecha: String,
+    var vueltas: Int,
     var circuito: Circuito? = null
+)
+
+data class NewCarrera(
+    var circuitoId: Int,
+    var fecha: String,
+    var vueltas: Int
 )

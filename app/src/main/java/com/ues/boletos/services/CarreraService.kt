@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.ues.boletos.DBHelper
 import com.ues.boletos.models.Carrera
+import com.ues.boletos.models.NewCarrera
 
 class CarreraService(private val dbHelper: DBHelper) {
 
@@ -75,7 +76,7 @@ class CarreraService(private val dbHelper: DBHelper) {
         }
     }
 
-    fun getCarreraWithCircuitoById(id:Int): Carrera? {
+    fun getCarreraWithCircuitoById(id: Int): Carrera? {
         val db = dbHelper.readableDatabase
         var cursor: android.database.Cursor? = null
         return try {
@@ -99,10 +100,22 @@ class CarreraService(private val dbHelper: DBHelper) {
         }
     }
 
-    fun insertCarrera(carrera: Carrera): Boolean {
+    fun insertCarrera(carrera: NewCarrera): Boolean {
         val db = dbHelper.writableDatabase
         return try {
             db.execSQL("INSERT INTO carreras (circuito_id, fecha, vueltas) VALUES (${carrera.circuitoId}, '${carrera.fecha}', ${carrera.vueltas})")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
+            db.close()
+        }
+    }
+
+    fun updateCarrera(carrera: Carrera): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("UPDATE carreras SET circuito_id = ${carrera.circuitoId}, fecha = '${carrera.fecha}', vueltas = ${carrera.vueltas} WHERE id = ${carrera.id}")
             true
         } catch (e: Exception) {
             false
