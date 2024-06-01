@@ -2,6 +2,7 @@ package com.ues.boletos.services
 
 import com.ues.boletos.DBHelper
 import com.ues.boletos.models.Equipo
+import com.ues.boletos.models.NewEquipo
 
 class EquipoService(private val dbHelper: DBHelper) {
     fun getEquipos():ArrayList<Equipo>{
@@ -69,7 +70,7 @@ class EquipoService(private val dbHelper: DBHelper) {
             db.close()
         }
     }
-    fun createEquipo(equipo: Equipo):Boolean{
+    fun createEquipo(equipo: NewEquipo):Boolean{
         val db = dbHelper.writableDatabase
         return try {
             db.execSQL("INSERT INTO equipos (nombre, marca, propietario, patrocinador) VALUES ('${equipo.nombre}', '${equipo.marca}', '${equipo.propietario}', '${equipo.patrocinador}')")

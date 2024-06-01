@@ -102,6 +102,14 @@ class EditarEquipoFragment : Fragment() {
             val marca = etMarca.text.toString()
             val propietario = etPropietario.text.toString()
             val patrocinador = etPatrocinador.text.toString()
+            if (nombre.isEmpty() || marca.isEmpty() || propietario.isEmpty() || patrocinador.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Todos los campos son obligatorios",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
             val newEquipo = Equipo(
                 equipo.id,
                 nombre,
