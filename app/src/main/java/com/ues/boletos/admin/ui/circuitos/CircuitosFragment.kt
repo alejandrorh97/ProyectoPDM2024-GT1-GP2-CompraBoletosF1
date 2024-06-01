@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
@@ -68,11 +69,9 @@ class CircuitosFragment : Fragment() {
             circuitos,
             object : CircuitoAdapter.OnButtonClickListener {
                 override fun onModificarClick(circuito: Circuito) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Modificar circuito ${circuito.nombre}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    findNavController().navigate(R.id.nav_editar_circuito, Bundle().apply {
+                        putInt("idCircuito", circuito.id)
+                    })
                 }
             })
     }

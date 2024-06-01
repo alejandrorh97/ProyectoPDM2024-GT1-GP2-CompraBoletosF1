@@ -17,7 +17,8 @@ class CircuitoService(private val dbHelper: DBHelper) {
                 val longitud = cursor.getFloat(cursor.getColumnIndexOrThrow("longitud"))
                 val curvas = cursor.getInt(cursor.getColumnIndexOrThrow("curvas"))
                 val ubicacion = cursor.getString(cursor.getColumnIndexOrThrow("ubicacion"))
-                val urlGoogleMaps = cursor.getString(cursor.getColumnIndexOrThrow("url_google_maps"))
+                val urlGoogleMaps =
+                    cursor.getString(cursor.getColumnIndexOrThrow("url_google_maps"))
                 circuitos.add(Circuito(id, nombre, longitud, curvas, ubicacion, urlGoogleMaps))
             }
             circuitos
@@ -39,7 +40,8 @@ class CircuitoService(private val dbHelper: DBHelper) {
                 val longitud = cursor.getFloat(cursor.getColumnIndexOrThrow("longitud"))
                 val curvas = cursor.getInt(cursor.getColumnIndexOrThrow("curvas"))
                 val ubicacion = cursor.getString(cursor.getColumnIndexOrThrow("ubicacion"))
-                val urlGoogleMaps = cursor.getString(cursor.getColumnIndexOrThrow("url_google_maps"))
+                val urlGoogleMaps =
+                    cursor.getString(cursor.getColumnIndexOrThrow("url_google_maps"))
                 Circuito(id, nombre, longitud, curvas, ubicacion, urlGoogleMaps)
             } else {
                 null
@@ -48,6 +50,18 @@ class CircuitoService(private val dbHelper: DBHelper) {
             null
         } finally {
             cursor?.close()
+            db.close()
+        }
+    }
+
+    fun updateCircuit(circuito: Circuito): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("UPDATE circuitos SET nombre = '${circuito.nombre}', longitud = ${circuito.longitud}, curvas = ${circuito.curvas}, ubicacion = '${circuito.ubicacion}', url_google_maps = '${circuito.urlGoogleMaps}' WHERE id = ${circuito.id}")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
             db.close()
         }
     }

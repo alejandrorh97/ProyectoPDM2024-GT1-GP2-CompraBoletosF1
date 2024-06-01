@@ -24,4 +24,9 @@
         android:name="com.ues.boletos.admin.ui.circuitos.CircuitosFragment"
         android:label="Circuitos"
         tools:layout="@layout/fragment_circuitos" />
+    <fragment
+        android:id="@+id/nav_editar_circuito"
+        android:name="com.ues.boletos.admin.ui.circuitos.EditarCircuitoFragment"
+        android:label="Editar Circuito"
+        tools:layout="@layout/fragment_editar_circuito" />
 </navigation>
