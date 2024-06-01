@@ -7,4 +7,8 @@ data class Circuito(
     val curvas: Int,
     val ubicacion: String,
     val urlGoogleMaps: String?
-)
+) {
+    override fun toString(): String {
+        return nombre
+    }
+}

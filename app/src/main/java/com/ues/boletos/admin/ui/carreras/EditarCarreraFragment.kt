@@ -1,16 +1,21 @@
 package com.ues.boletos.admin.ui.carreras
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
+import com.ues.boletos.models.Carrera
 import com.ues.boletos.services.CarreraService
 import com.ues.boletos.services.CircuitoService
 import java.util.Calendar
@@ -33,47 +38,83 @@ class EditarCarreraFragment : Fragment() {
     private lateinit var carreraService: CarreraService
     private lateinit var circuitoService: CircuitoService
     private lateinit var spCircuito: Spinner
-    private lateinit var  bFecha: Button
+    private lateinit var bFecha: Button
+    private lateinit var bHora: Button
+    private var hora: String? = null
     private var fecha: String? = null
     private lateinit var etVueltas: EditText
     private lateinit var bGuardar: Button
     private val calendar: Calendar = Calendar.getInstance()
+    private lateinit var carrera: Carrera
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var idCarrera: Int? = null
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            idCarrera = it.getInt("idCarrera")
         }
         dbHelper = DBHelper(requireContext())
         carreraService = CarreraService(dbHelper)
         circuitoService = CircuitoService(dbHelper)
+        if (idCarrera != null) {
+            val result = carreraService.getCarreraWithCircuitoById(idCarrera!!)
+            if (result == null) {
+                Toast.makeText(requireContext(), "Carrera no encontrada", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                carrera = result
+                hora = carrera.fecha.split(" ")[1]
+                fecha = carrera.fecha.split(" ")[0]
+            }
+        } else {
+            Toast.makeText(requireContext(), "Carrera no encontrada", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initComponents()
+        val view = inflater.inflate(R.layout.fragment_editar_carrera, container, false)
+        initComponents(view)
         initUI()
         initListeners()
-        return inflater.inflate(R.layout.fragment_editar_carrera, container, false)
+        return view
     }
 
-    private fun initComponents() {
-        spCircuito = requireView().findViewById(R.id.spCircuito)
-        bFecha = requireView().findViewById(R.id.bFecha)
-        etVueltas = requireView().findViewById(R.id.etVueltas)
-        bGuardar = requireView().findViewById(R.id.bGuardar)
+    private fun initComponents(view: View) {
+        spCircuito = view.findViewById(R.id.spCircuito)
+        bFecha = view.findViewById(R.id.bFecha)
+        etVueltas = view.findViewById(R.id.etVueltas)
+        bGuardar = view.findViewById(R.id.bGuardar)
+        bHora = view.findViewById(R.id.bHora)
     }
 
     private fun initUI() {
+        bFecha.text = fecha
+        bHora.text = hora
+        etVueltas.setText(carrera.vueltas.toString())
+        val circuitos = circuitoService.getCircuitos()
+        Log.d("Circuitos", circuitos.toString())
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, circuitos)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spCircuito.adapter = adapter
 
+        for (i in 0 until circuitos.size) {
+            if (circuitos[i].id == carrera.circuitoId) {
+                spCircuito.setSelection(i)
+                break
+            }
+        }
     }
 
     private fun initListeners() {
         bFecha.setOnClickListener { showDatePickerDialog() }
         bGuardar.setOnClickListener { saveCarrera() }
+        bHora.setOnClickListener { showTimePickerDialog() }
     }
 
     private fun showDatePickerDialog() {
@@ -88,6 +129,21 @@ class EditarCarreraFragment : Fragment() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
+        datePicker.show()
+    }
+
+    private fun showTimePickerDialog() {
+        val timePicker = TimePickerDialog(
+            requireContext(),
+            { view, hourOfDay, minute ->
+                hora = "$hourOfDay:$minute:00"
+                bHora.text = hora
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        )
+        timePicker.show()
     }
 
     private fun saveCarrera() {

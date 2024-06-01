@@ -75,6 +75,30 @@ class CarreraService(private val dbHelper: DBHelper) {
         }
     }
 
+    fun getCarreraWithCircuitoById(id:Int): Carrera? {
+        val db = dbHelper.readableDatabase
+        var cursor: android.database.Cursor? = null
+        return try {
+            cursor = db.rawQuery("SELECT * FROM carreras WHERE id = $id", null)
+            if (cursor.moveToNext()) {
+                val circuitoId = cursor.getInt(cursor.getColumnIndexOrThrow("circuito_id"))
+                val fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha"))
+                val vueltas = cursor.getInt(cursor.getColumnIndexOrThrow("vueltas"))
+                val circuito = CircuitoService(dbHelper).getCircuitoById(circuitoId)
+                val carrera = Carrera(id, circuitoId, fecha, vueltas)
+                carrera.circuito = circuito
+                carrera
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        } finally {
+            cursor?.close()
+            db.close()
+        }
+    }
+
     fun insertCarrera(carrera: Carrera): Boolean {
         val db = dbHelper.writableDatabase
         return try {
