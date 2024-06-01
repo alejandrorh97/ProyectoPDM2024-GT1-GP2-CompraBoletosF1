@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextNombreCarrera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la Carrera"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextNombreCircuito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Circuito"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextUbicacionCircuito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ubicación del Circuito"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextLongitudCircuito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Longitud del Circuito"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextCurvasCircuito"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Curvas del Circuito"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextFechaCarrera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha de la Carrera"
+        android:inputType="date" />
+
+    <EditText
+        android:id="@+id/editTextVueltasCarrera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Vueltas de la Carrera"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/buttonGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar" />
+</LinearLayout>

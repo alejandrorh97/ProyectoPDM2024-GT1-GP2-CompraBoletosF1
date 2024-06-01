@@ -22,8 +22,8 @@
             android:exported="false" />
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/Theme.Main"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Main" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
