@@ -60,7 +60,6 @@ class CarrerasFragment : Fragment() {
                 "Longitud 1",
                 "Curvas 1",
                 "Fecha 1",
-                "Vueltas 1"
             )
         )
         carreras.add(
@@ -72,7 +71,6 @@ class CarrerasFragment : Fragment() {
                 "Longitud 2",
                 "Curvas 2",
                 "Fecha 2",
-                "Vueltas 2"
             )
         )
         carreras.add(
@@ -84,7 +82,6 @@ class CarrerasFragment : Fragment() {
                 "Longitud 3",
                 "Curvas 3",
                 "Fecha 3",
-                "Vueltas 3"
             )
         )
         carreras.add(
@@ -96,7 +93,6 @@ class CarrerasFragment : Fragment() {
                 "Longitud 4",
                 "Curvas 4",
                 "Fecha 4",
-                "Vueltas 4"
             )
         )
 
@@ -113,7 +109,7 @@ class CarrerasFragment : Fragment() {
     fun onSelectCarrera(carrera: CarreraItem) {
         Toast.makeText(
             requireActivity(),
-            "Carrera seleccionada: ${carrera.nombreCarrera}",
+            "Carrera seleccionada: ${carrera.nombreCircuito}",
             Toast.LENGTH_SHORT
         ).show()
         findNavController().navigate(R.id.nav_editar_carrera, Bundle().apply {

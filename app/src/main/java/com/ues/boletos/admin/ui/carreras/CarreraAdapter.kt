@@ -20,21 +20,17 @@ class CarreraAdapter(
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.list_carrera_item, null, true)
 
-        val nombreCarrera: TextView = rowView.findViewById(R.id.nombreCarrera)
         val nombreCircuito: TextView = rowView.findViewById(R.id.nombreCircuito)
         val ubicacionCircuito: TextView = rowView.findViewById(R.id.ubicacionCircuito)
         val longitudCircuito: TextView = rowView.findViewById(R.id.longitudCircuito)
-        val curvasCircuito: TextView = rowView.findViewById(R.id.curvasCircuito)
         val fechaCarrera: TextView = rowView.findViewById(R.id.fechaCarrera)
         val vueltasCarrera: TextView = rowView.findViewById(R.id.vueltasCarrera)
         val bEditarCarrera: Button = rowView.findViewById(R.id.bEditarCarrera)
 
         val carrera = carreras[position]
-        nombreCarrera.text = carrera.nombreCarrera
         nombreCircuito.text = carrera.nombreCircuito
         ubicacionCircuito.text = carrera.ubicacionCircuito
         longitudCircuito.text = carrera.longitudCircuito
-        curvasCircuito.text = carrera.curvasCircuito
         fechaCarrera.text = carrera.fechaCarrera
         vueltasCarrera.text = carrera.vueltasCarrera
 

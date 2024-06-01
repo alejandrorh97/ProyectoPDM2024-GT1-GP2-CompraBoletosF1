@@ -16,34 +16,13 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/nombreCarrera"
+            android:id="@+id/nombreCircuito"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Nombre de la Carrera"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Circuito:"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/nombreCircuito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" Nombre del Circuito"
-                android:textSize="16sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -96,27 +75,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Curvas:"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/curvasCircuito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" 10"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Fecha:"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -149,11 +107,21 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bEditarCarrera"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Editar" />
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/bEditarCarrera"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/baseline_edit_24"
+                android:drawablePadding="-10dp"
+                app:cornerRadius="32dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

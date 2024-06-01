@@ -67,7 +67,6 @@ class DBHelper(context: Context) :
             """
             CREATE TABLE carreras (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nombre TEXT NOT NULL,
                 circuito_id INTEGER NOT NULL,
                 fecha DATETIME NOT NULL,
                 vueltas INTEGER NOT NULL,
@@ -201,11 +200,11 @@ class DBHelper(context: Context) :
         // Insertar carreras
         db.execSQL(
             """
-                    INSERT INTO carreras (nombre, circuito_id, fecha, vueltas) 
+                    INSERT INTO carreras (circuito_id, fecha, vueltas) 
                     VALUES 
-                    ('Carrera 1', 1, '2024-06-01 14:00:00', 50),
-                    ('Carrera 2', 2, '2024-07-01 15:00:00', 60),
-                    ('Carrera 3', 3, '2024-08-01 16:00:00', 70);
+                    (1, '2024-06-01 14:00:00', 50),
+                    (2, '2024-07-01 15:00:00', 60),
+                    (3, '2024-08-01 16:00:00', 70);
                 """
         )
         // Insertar equipos
