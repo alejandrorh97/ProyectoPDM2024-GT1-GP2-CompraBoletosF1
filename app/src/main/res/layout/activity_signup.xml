@@ -7,16 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".SignupActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="40dp"
         android:gravity="center"
-        android:orientation="vertical"
-        tools:context=".SignupActivity">
+        android:orientation="vertical">
         <!--
         data class NewUser(
             val email: String,
@@ -194,7 +191,7 @@
             android:id="@+id/bRegistrarse"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="100dp"
             android:layout_marginBottom="100dp"
             android:text="Crear cuenta"
             android:textAllCaps="true"

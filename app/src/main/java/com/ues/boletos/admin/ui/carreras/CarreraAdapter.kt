@@ -5,16 +5,16 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
-import com.ues.boletos.models.CarreraItem
+import com.ues.boletos.models.Carrera
 import com.ues.boletos.R
 
 class CarreraAdapter(
     private val context: Activity,
-    private val carreras: ArrayList<CarreraItem>,
+    private val carreras: ArrayList<Carrera>,
     private val onButtonClickListener: OnButtonClickListener
-) : ArrayAdapter<CarreraItem>(context, R.layout.list_carrera_item, carreras) {
+) : ArrayAdapter<Carrera>(context, R.layout.list_carrera_item, carreras) {
     interface OnButtonClickListener {
-        fun onModificarClick(alumno: CarreraItem)
+        fun onModificarClick(alumno: Carrera)
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
@@ -28,11 +28,11 @@ class CarreraAdapter(
         val bEditarCarrera: Button = rowView.findViewById(R.id.bEditarCarrera)
 
         val carrera = carreras[position]
-        nombreCircuito.text = carrera.nombreCircuito
-        ubicacionCircuito.text = carrera.ubicacionCircuito
-        longitudCircuito.text = carrera.longitudCircuito
-        fechaCarrera.text = carrera.fechaCarrera
-        vueltasCarrera.text = carrera.vueltasCarrera
+        nombreCircuito.text = carrera.circuito?.nombre
+        ubicacionCircuito.text = carrera.circuito?.ubicacion
+        longitudCircuito.text = "${carrera.circuito?.longitud} km"
+        fechaCarrera.text = carrera.fecha
+        vueltasCarrera.text = carrera.vueltas.toString()
 
         bEditarCarrera.setOnClickListener {
             onButtonClickListener.onModificarClick(carrera)

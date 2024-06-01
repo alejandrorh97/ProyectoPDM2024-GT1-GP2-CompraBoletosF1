@@ -2,6 +2,7 @@ package com.ues.boletos.admin.ui.carreras
 
 import CarreraAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.ues.boletos.DBHelper
 import com.ues.boletos.R
 import com.ues.boletos.databinding.FragmentCarrerasBinding
-import com.ues.boletos.models.CarreraItem
+import com.ues.boletos.models.Carrera
+import com.ues.boletos.services.CarreraService
+import com.ues.boletos.services.CircuitoService
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -27,6 +31,9 @@ class CarrerasFragment : Fragment() {
     private var param2: String? = null
     private lateinit var lvCarreras: ListView
     private lateinit var binding: FragmentCarrerasBinding
+    private lateinit var dbHelper: DBHelper
+    private lateinit var carreraService: CarreraService
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +42,9 @@ class CarrerasFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        dbHelper = DBHelper(requireContext())
+        carreraService = CarreraService(dbHelper)
     }
 
     override fun onCreateView(
@@ -50,70 +60,25 @@ class CarrerasFragment : Fragment() {
 
     fun initUI() {
         // Crear una lista de carreras de ejemplo
-        val carreras = ArrayList<CarreraItem>()
-        carreras.add(
-            CarreraItem(
-                1,
-                "Carrera 1",
-                "Circuito 1",
-                "Ubicacion 1",
-                "Longitud 1",
-                "Curvas 1",
-                "Fecha 1",
-            )
-        )
-        carreras.add(
-            CarreraItem(
-                2,
-                "Carrera 2",
-                "Circuito 2",
-                "Ubicacion 2",
-                "Longitud 2",
-                "Curvas 2",
-                "Fecha 2",
-            )
-        )
-        carreras.add(
-            CarreraItem(
-                3,
-                "Carrera 3",
-                "Circuito 3",
-                "Ubicacion 3",
-                "Longitud 3",
-                "Curvas 3",
-                "Fecha 3",
-            )
-        )
-        carreras.add(
-            CarreraItem(
-                4,
-                "Carrera 4",
-                "Circuito 4",
-                "Ubicacion 4",
-                "Longitud 4",
-                "Curvas 4",
-                "Fecha 4",
-            )
-        )
-
+        val carreras = carreraService.getCarrerasWithCircuito()
         lvCarreras.adapter = CarreraAdapter(
             requireActivity(),
             carreras,
             object : CarreraAdapter.OnButtonClickListener {
-                override fun onModificarClick(carrera: CarreraItem) {
+                override fun onModificarClick(carrera: Carrera) {
                     onSelectCarrera(carrera)
                 }
             })
     }
 
-    fun onSelectCarrera(carrera: CarreraItem) {
+    fun onSelectCarrera(carrera: Carrera) {
         Toast.makeText(
             requireActivity(),
-            "Carrera seleccionada: ${carrera.nombreCircuito}",
+            "Carrera seleccionada: ${carrera.circuito?.nombre}",
             Toast.LENGTH_SHORT
         ).show()
         findNavController().navigate(R.id.nav_editar_carrera, Bundle().apply {
-            putInt("idCarrera", carrera.idCarrera)
+            putInt("idCarrera", carrera.id)
         })
     }
 
