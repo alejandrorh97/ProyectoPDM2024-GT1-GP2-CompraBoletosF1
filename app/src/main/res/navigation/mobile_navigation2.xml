@@ -9,4 +9,8 @@
         android:name="com.ues.boletos.admin.ui.carreras.CarrerasFragment"
         android:label="Carreras"
         tools:layout="@layout/fragment_carreras" />
+    <fragment
+        android:id="@+id/nav_editar_carrera"
+        android:name="com.ues.boletos.admin.ui.carreras.EditarCarreraFragment"
+        tools:layout="@layout/fragment_editar_carrera" />
 </navigation>

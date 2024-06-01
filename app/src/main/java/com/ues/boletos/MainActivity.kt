@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.SplashTheme)
+//        setTheme(R.style.SplashTheme)
         checkLoginStatus()
         initUI()
         initComponents()
