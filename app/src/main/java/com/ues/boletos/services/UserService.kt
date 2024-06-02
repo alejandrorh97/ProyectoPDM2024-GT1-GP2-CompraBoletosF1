@@ -61,7 +61,7 @@ class UserService(private val dbHelper: DBHelper) {
                 put("fecha_nacimiento", user.fechaNacimiento)
                 put("sexo", user.sexo)
                 put("password", user.password)
-                put("rol_id", 2)
+                put("rol_id", 3)
             }
             val newRowId = db.insertOrThrow("users", null, values)
             newRowId != -1L
