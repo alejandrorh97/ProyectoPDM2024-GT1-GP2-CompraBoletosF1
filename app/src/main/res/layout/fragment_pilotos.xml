@@ -43,8 +43,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
@@ -52,8 +52,8 @@
                 android:id="@+id/cbActivo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Está activo"
-                android:layout_gravity="start" />
+                android:layout_gravity="start"
+                android:text="Está activo" />
 
             <View
                 android:layout_width="0dp"
@@ -61,14 +61,24 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/bAlertDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:backgroundTint="@color/red_600"
+                android:text="Eliminar"
+                android:textAllCaps="true"
+                android:textSize="16sp"
+                app:cornerRadius="32dp" />
+
+            <Button
                 android:id="@+id/bGuardar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginStart="16dp"
                 android:text="Crear"
-                android:layout_gravity="end" />
+                app:cornerRadius="32dp" />
         </LinearLayout>
-
 
 
         <ListView

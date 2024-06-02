@@ -1,5 +1,6 @@
 package com.ues.boletos.admin.ui.circuitos
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ class EditarCircuitoFragment : Fragment() {
     private lateinit var etUrlGoogleMaps: EditText
     private lateinit var bGuardar: Button
     private lateinit var circuito: Circuito
+    private lateinit var bAlertDelete: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +90,7 @@ class EditarCircuitoFragment : Fragment() {
         etUbicacion = view.findViewById(R.id.etUbicacion)
         etUrlGoogleMaps = view.findViewById(R.id.etUrlGoogleMaps)
         bGuardar = view.findViewById(R.id.bGuardar)
+        bAlertDelete = view.findViewById(R.id.bAlertDelete)
     }
 
     private fun initUI() {
@@ -100,6 +103,34 @@ class EditarCircuitoFragment : Fragment() {
 
     private fun initListeners() {
         bGuardar.setOnClickListener { saveCircuito() }
+        bAlertDelete.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Eliminar circuito")
+                .setMessage("¿Está seguro que desea eliminar el circuito?")
+                .setPositiveButton("Sí") { dialog, which -> deleteCircuito() }
+                .setNegativeButton("No") { dialog, which -> }
+                .show()
+        }
+    }
+
+    private fun deleteCircuito() {
+        try {
+            if (circuitoService.deleteCircuito(circuito.id)) {
+                Toast.makeText(requireContext(), "Circuito eliminado", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Error al eliminar el circuito",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al eliminar el circuito", Toast.LENGTH_SHORT)
+                .show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveCircuito() {
@@ -115,7 +146,11 @@ class EditarCircuitoFragment : Fragment() {
                 Toast.makeText(requireContext(), "Circuito actualizado", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             } else {
-                Toast.makeText(requireContext(), "Error al actualizar el circuito", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    "Error al actualizar el circuito",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         } catch (e: Exception) {

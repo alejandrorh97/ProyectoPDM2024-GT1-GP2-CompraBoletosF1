@@ -78,4 +78,16 @@ class CircuitoService(private val dbHelper: DBHelper) {
             db.close()
         }
     }
+
+    fun deleteCircuito(id: Int): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("DELETE FROM circuitos WHERE id = $id")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
+            db.close()
+        }
+    }
 }
