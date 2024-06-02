@@ -1,17 +1,16 @@
 package com.ues.boletos.ui.home
 
-import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
+import com.ues.boletos.comprar.DetalleCarreraActivity
 import com.ues.boletos.R
 import com.ues.boletos.api.responses.CarreraResponse
-import com.ues.boletos.models.Carrera
 
 public class CarrerasRVA : RecyclerView.Adapter<CarrerasRVA.ViewHolder>(){
     private val datos = mutableListOf<CarreraResponse>()
@@ -22,7 +21,15 @@ public class CarrerasRVA : RecyclerView.Adapter<CarrerasRVA.ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(datos[position])
+        val modelo = datos[position]
+        holder.bind(modelo)
+
+        holder.botonComprar.setOnClickListener {
+            val id = modelo.id
+            val intent = Intent(holder.itemView.context, DetalleCarreraActivity::class.java)
+            intent.putExtra("ID", id)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,6 +46,7 @@ public class CarrerasRVA : RecyclerView.Adapter<CarrerasRVA.ViewHolder>(){
         val nombre: TextView = itemView.findViewById(R.id.tvCarreraUserNombreCircuito)
         val fecha: TextView = itemView.findViewById(R.id.tvCarreraUserFecha)
         val descripcion: TextView = itemView.findViewById(R.id.tvCarreraUserDescripcion)
+        val botonComprar: Button = itemView.findViewById(R.id.btnComprarCarrera)
 
         fun bind(carrera: CarreraResponse) {
             nombre.text = carrera.nombre
