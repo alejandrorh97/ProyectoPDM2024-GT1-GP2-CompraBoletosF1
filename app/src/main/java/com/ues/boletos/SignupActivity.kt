@@ -33,6 +33,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var etRePassword: EditText
     private lateinit var userService: UserService
     private val calendar: Calendar = Calendar.getInstance()
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +44,8 @@ class SignupActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        userService = UserService(this)
+        dbHelper = DBHelper(this)
+        userService = UserService(dbHelper)
         initComponents()
         initUI()
         initListener()

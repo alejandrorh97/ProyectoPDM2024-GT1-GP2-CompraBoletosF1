@@ -24,3 +24,13 @@ data class NewUser(
     val sexo: String, // Hombre, Mujer
     val password: String
 )
+
+data class UserSimpleData(
+    val id: Int,
+    val nombre: String,
+    val apellido: String
+) {
+    override fun toString(): String {
+        return "$nombre $apellido"
+    }
+}
