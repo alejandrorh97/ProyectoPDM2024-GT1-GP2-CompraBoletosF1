@@ -6,7 +6,7 @@ data class Piloto(
     val equipo_id: Int,
     val apodo: String,
     val esta_activo: Boolean,
-    val usuario: Usuario?
+    val usuario: UserSimpleData?
 ) {
     override fun toString(): String {
         return if (usuario != null) {

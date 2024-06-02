@@ -35,13 +35,14 @@ class CarreraService(private val dbHelper: DBHelper) {
         val carreras = ArrayList<Carrera>()
         var cursor: android.database.Cursor? = null
         return try {
+            val circuitoService = CircuitoService(dbHelper)
             cursor = db.rawQuery("SELECT * FROM carreras", null)
             while (cursor.moveToNext()) {
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
                 val circuitoId = cursor.getInt(cursor.getColumnIndexOrThrow("circuito_id"))
                 val fecha = cursor.getString(cursor.getColumnIndexOrThrow("fecha"))
                 val vueltas = cursor.getInt(cursor.getColumnIndexOrThrow("vueltas"))
-                val circuito = CircuitoService(dbHelper).getCircuitoById(circuitoId)
+                val circuito = circuitoService.getCircuitoById(circuitoId)
                 val carrera = Carrera(id, circuitoId, fecha, vueltas)
                 carrera.circuito = circuito
                 carreras.add(carrera)
