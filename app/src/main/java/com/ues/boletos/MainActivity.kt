@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var navController: NavController
+    private var isAdmin: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkLoginStatus() {
         val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
+        isAdmin = sharedPreferences.getBoolean("isAdmin", false)
         if (!isLoggedIn) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -67,6 +69,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
 
+    }
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val adminItem = menu.findItem(R.id.action_admin)
+        adminItem.isVisible = isAdmin
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

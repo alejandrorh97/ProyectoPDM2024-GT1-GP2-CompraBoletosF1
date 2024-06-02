@@ -90,6 +90,23 @@ class UserService(private val dbHelper: DBHelper) {
         }
     }
 
+    fun isAdmin(email: String): Boolean {
+        val db = dbHelper.readableDatabase
+        var cursor: android.database.Cursor? = null
+        return try {
+            cursor = db.rawQuery(
+                "SELECT * FROM users WHERE email = ? AND rol_id = 1",
+                arrayOf(email)
+            )
+            val result = cursor.count > 0
+            result
+        } catch (e: Exception) {
+            false
+        } finally {
+            cursor?.close()
+            db.close()
+        }
+    }
     fun existeUsuario(email: String): Boolean {
         val db = dbHelper.readableDatabase
         var cursor: android.database.Cursor? = null

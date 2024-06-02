@@ -50,7 +50,8 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Bienvenido de vuelta!", Toast.LENGTH_SHORT).show()
                     val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
-                    editor.putBoolean("isLoggedIn", true) // Cambia esto a lo que quieras
+                    editor.putBoolean("isLoggedIn", true)
+                    editor.putBoolean("isAdmin", userService.isAdmin(email))
                     editor.apply()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
