@@ -47,8 +47,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun cargarDatos()
-    {
+    private fun cargarDatos() {
         this.loading = true
         val apiService = BaseService.instance.create(CarreraApi::class.java)
         val call = apiService.getCarreras(this.page)
@@ -70,8 +69,12 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<BaseApiResponse<CarreraResponse>>, t: Throwable) {
-                Log.e("HomeFragment", "Error al obtener las carreras", t)
-                Toast.makeText(context, "Error al obtener las carreras", Toast.LENGTH_SHORT).show()
+                if (t is java.net.SocketTimeoutException) {
+                    Toast.makeText(context, "No se pudo conectar al servidor", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("HomeFragment", "Error al obtener las carreras", t)
+                    Toast.makeText(context, "Error al obtener las carreras", Toast.LENGTH_SHORT).show()
+                }
                 this@HomeFragment.loading = false
             }
         })
