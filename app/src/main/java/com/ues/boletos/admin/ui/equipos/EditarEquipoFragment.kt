@@ -1,5 +1,6 @@
 package com.ues.boletos.admin.ui.equipos
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,6 +36,7 @@ class EditarEquipoFragment : Fragment() {
     private lateinit var etPropietario: EditText
     private lateinit var etPatrocinador: EditText
     private lateinit var bGuardar: Button
+    private lateinit var bAlertDelete: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +82,7 @@ class EditarEquipoFragment : Fragment() {
         etPropietario = view.findViewById(R.id.etPropietario)
         etPatrocinador = view.findViewById(R.id.etPatrocinador)
         bGuardar = view.findViewById(R.id.bGuardar)
+        bAlertDelete = view.findViewById(R.id.bAlertDelete)
     }
 
     private fun initUI() {
@@ -92,6 +95,44 @@ class EditarEquipoFragment : Fragment() {
     private fun initListeners() {
         bGuardar.setOnClickListener {
             saveEquipo()
+        }
+        bAlertDelete.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Eliminar equipo")
+                .setMessage("¿Está seguro que desea eliminar el equipo?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    deleteEquipo()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+    private fun deleteEquipo() {
+        try {
+            val result = equipoService.deleteEquipo(equipo.id)
+            if (result) {
+                Toast.makeText(
+                    requireContext(),
+                    "Equipo eliminado correctamente",
+                    Toast.LENGTH_SHORT
+                ).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Error al eliminar el equipo",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                requireContext(),
+                "Error al eliminar el equipo",
+                Toast.LENGTH_SHORT
+            ).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
