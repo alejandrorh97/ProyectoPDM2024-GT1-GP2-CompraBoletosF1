@@ -94,7 +94,8 @@ class DBHelper(context: Context) :
                 apodo TEXT NOT NULL,
                 esta_activo BOOLEAN NOT NULL,
                 FOREIGN KEY (equipo_id) REFERENCES equipos(id),
-                FOREIGN KEY (usuario_id) REFERENCES users(id)
+                FOREIGN KEY (usuario_id) REFERENCES users(id),
+                UNIQUE (usuario_id)
             );
         """
         )
@@ -144,7 +145,8 @@ class DBHelper(context: Context) :
                 asiento_id INTEGER NOT NULL,
                 precio REAL NOT NULL,
                 FOREIGN KEY (ticket_id) REFERENCES tickets(id),
-                FOREIGN KEY (asiento_id) REFERENCES asientos(id)
+                FOREIGN KEY (asiento_id) REFERENCES asientos(id),
+                UNIQUE (ticket_id, asiento_id)
             );
         """
         )
@@ -156,10 +158,87 @@ class DBHelper(context: Context) :
                 piloto_id INTEGER NOT NULL,
                 puesto INTEGER,
                 FOREIGN KEY (carrera_id) REFERENCES carreras(id),
-                FOREIGN KEY (piloto_id) REFERENCES pilotos(id)
+                FOREIGN KEY (piloto_id) REFERENCES pilotos(id),
+                UNIQUE (carrera_id, piloto_id)
             );
         """
         )
+
+//        TRIGGERS
+        // Trigger para actualizar la fecha de actualización de un usuario
+        db.execSQL(
+            """
+            CREATE TRIGGER update_user_updated_at
+            AFTER UPDATE ON users
+            BEGIN
+                UPDATE users SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+            END;
+        """
+        )
+        // Trigger para no permitir tomar un asiento que ya está ocupado en una carrera
+        db.execSQL(
+            """
+            CREATE TRIGGER prevent_occupied_seat
+            BEFORE INSERT ON ticket_asientos
+            FOR EACH ROW
+            BEGIN
+                SELECT
+                    CASE
+                        WHEN EXISTS (
+                            SELECT 1
+                            FROM ticket_asientos ta
+                            JOIN tickets t ON ta.ticket_id = t.id
+                            WHERE ta.asiento_id = NEW.asiento_id
+                            AND t.carrera_id = (SELECT carrera_id FROM tickets WHERE id = NEW.ticket_id)
+                        )
+                        THEN RAISE(ABORT, 'El asiento ya está ocupado para esta carrera.')
+                    END;
+            END;
+        """
+        )
+        // Trigger para no permitir hacer una carrera del mismo circuito a la misma hora
+        db.execSQL(
+            """
+                CREATE TRIGGER prevent_same_time_race
+                BEFORE INSERT ON carreras
+                FOR EACH ROW
+                BEGIN
+                    SELECT
+                        CASE
+                            WHEN EXISTS (
+                                SELECT 1
+                                FROM carreras
+                                WHERE circuito_id = NEW.circuito_id
+                                AND fecha = NEW.fecha
+                            )
+                            THEN RAISE(ABORT, 'Ya existe una carrera programada en este circuito a la misma hora.')
+                        END;
+                END;
+
+            """.trimIndent()
+        )
+        // Trigger para no permitir hacer una carrera del mismo circuito a la misma hora durante una actualización
+        db.execSQL(
+            """
+                CREATE TRIGGER prevent_same_time_race_update
+                BEFORE UPDATE ON carreras
+                FOR EACH ROW
+                BEGIN
+                    SELECT
+                        CASE
+                            WHEN EXISTS (
+                                SELECT 1
+                                FROM carreras
+                                WHERE circuito_id = NEW.circuito_id
+                                AND fecha = NEW.fecha
+                                AND id != NEW.id
+                            )
+                            THEN RAISE(ABORT, 'Ya existe una carrera programada en este circuito a la misma hora.')
+                        END;
+                END;
+            """.trimIndent()
+        )
+
 
         seedDatabase(db)
     }
