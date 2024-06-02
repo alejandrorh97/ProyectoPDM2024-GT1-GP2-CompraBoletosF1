@@ -1,42 +1,100 @@
 package com.ues.boletos.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.ues.boletos.databinding.FragmentHomeBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.ues.boletos.R
+import com.ues.boletos.api.BaseService
+import com.ues.boletos.api.CarreraApi
+import com.ues.boletos.api.responses.BaseApiResponse
+import com.ues.boletos.api.responses.CarreraResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
+    private lateinit var adapter: CarrerasRVA
+    private lateinit var rvCarrera: RecyclerView
 
-    private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private var page = 1
+    private var loading = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        this.rvCarrera = view.findViewById(R.id.rvCarrerasUsuario)
+        this.rvCarrera.layoutManager = LinearLayoutManager(requireContext())
+        this.adapter = CarrerasRVA()
+        this.rvCarrera.adapter = this.adapter
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        cargarDatos()
+        addScrollListener()
+
+        return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun cargarDatos()
+    {
+        this.loading = true
+        val apiService = BaseService.instance.create(CarreraApi::class.java)
+        val call = apiService.getCarreras(this.page)
+        call.enqueue(object : Callback<BaseApiResponse<CarreraResponse>> {
+            override fun onResponse(
+                call: Call<BaseApiResponse<CarreraResponse>>,
+                response: Response<BaseApiResponse<CarreraResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    val carreras = response.body()?.data
+                    if (!carreras.isNullOrEmpty()) {
+                        this@HomeFragment.adapter.addAll(carreras)
+                        this@HomeFragment.page++
+                    }
+                } else {
+                    Toast.makeText(context, "Error al obtener las carreras", Toast.LENGTH_SHORT).show()
+                }
+                this@HomeFragment.loading = false
+            }
+
+            override fun onFailure(call: Call<BaseApiResponse<CarreraResponse>>, t: Throwable) {
+                Log.e("HomeFragment", "Error al obtener las carreras", t)
+                Toast.makeText(context, "Error al obtener las carreras", Toast.LENGTH_SHORT).show()
+                this@HomeFragment.loading = false
+            }
+        })
+    }
+
+    private fun addScrollListener() {
+        this.rvCarrera.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Log.d("HomeFragment", loading.toString())
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!loading) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                    ) {
+                        cargarDatos()
+                    }
+                }
+            }
+        })
     }
 }
