@@ -94,4 +94,16 @@ class PilotoService(private val dbHelper: DBHelper) {
             db.close()
         }
     }
+
+    fun deletePiloto(id: Int): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("DELETE FROM pilotos WHERE id = $id")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
+            db.close()
+        }
+    }
 }

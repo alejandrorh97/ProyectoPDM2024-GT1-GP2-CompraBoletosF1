@@ -238,7 +238,17 @@ class DBHelper(context: Context) :
                 END;
             """.trimIndent()
         )
-
+        // Trigger para eliminar los pilotos de un equipo cuando se elimina el equipo
+        db.execSQL(
+            """
+                CREATE TRIGGER delete_pilots_on_team_delete
+                BEFORE DELETE ON equipos
+                FOR EACH ROW
+                BEGIN
+                    DELETE FROM pilotos WHERE equipo_id = OLD.id;
+                END;
+            """.trimIndent()
+        )
 
         seedDatabase(db)
     }

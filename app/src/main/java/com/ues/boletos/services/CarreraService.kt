@@ -125,4 +125,16 @@ class CarreraService(private val dbHelper: DBHelper) {
         }
     }
 
+    fun deleteCarrera(id: Int): Boolean {
+        val db = dbHelper.writableDatabase
+        return try {
+            db.execSQL("DELETE FROM carreras WHERE id = $id")
+            true
+        } catch (e: Exception) {
+            false
+        } finally {
+            db.close()
+        }
+    }
+
 }
