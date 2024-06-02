@@ -1,6 +1,7 @@
 package com.ues.boletos.services
 
 import com.ues.boletos.DBHelper
+import com.ues.boletos.models.NewPiloto
 import com.ues.boletos.models.Piloto
 
 class PilotoService(private val dbHelper: DBHelper) {
@@ -64,7 +65,7 @@ class PilotoService(private val dbHelper: DBHelper) {
         }
     }
 
-    fun createPiloto(piloto: Piloto): Boolean {
+    fun createPiloto(piloto: NewPiloto): Boolean {
         val db = dbHelper.writableDatabase
         return try {
             db.execSQL("INSERT INTO pilotos (usuario_id, equipo_id, apodo, esta_activo) VALUES (${piloto.usuario_id}, ${piloto.equipo_id}, '${piloto.apodo}', ${if (piloto.esta_activo) 1 else 0})")
