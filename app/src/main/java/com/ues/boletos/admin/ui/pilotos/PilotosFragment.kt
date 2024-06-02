@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ListView
@@ -18,6 +19,7 @@ import com.ues.boletos.R
 import com.ues.boletos.databinding.FragmentEquiposBinding
 import com.ues.boletos.databinding.FragmentPilotosBinding
 import com.ues.boletos.models.Equipo
+import com.ues.boletos.models.NewPiloto
 import com.ues.boletos.models.Piloto
 import com.ues.boletos.models.UserSimpleData
 import com.ues.boletos.services.EquipoService
@@ -51,6 +53,7 @@ class PilotosFragment : Fragment() {
     private var pilotoSelected: Piloto? = null
     private lateinit var userService: UserService
     private lateinit var usuarios: ArrayList<UserSimpleData>
+    private lateinit var bGuardar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,44 +102,100 @@ class PilotosFragment : Fragment() {
         etApodo = view.findViewById(R.id.etApodo)
         spUsuarios = view.findViewById(R.id.spUsuarios)
         cbActivo = view.findViewById(R.id.cbActivo)
+        bGuardar = view.findViewById(R.id.bGuardar)
     }
 
     private fun initUI() {
         // todo hacer que el header tenga el nombre del equipo
-        val pilotos = pilotoServices.getPilotosByEquipo(equipo.id)
-        Log.d("Pilotos", pilotos.toString())
-        lvPilotos.adapter = PilotoAdapter(requireActivity(), pilotos, object : PilotoAdapter.OnButtonClickListener {
-            override fun onModificarClick(piloto: Piloto) {
-                Toast.makeText(requireContext(), "Modificar piloto ${piloto.apodo}", Toast.LENGTH_SHORT).show()
-                pilotoSelected = piloto
-                etApodo.setText(piloto.apodo)
-                cbActivo.isChecked = piloto.esta_activo
-                for (i in 0 until usuarios.size) {
-                    if (usuarios[i].id == piloto.usuario_id) {
-                        spUsuarios.setSelection(i)
-                        break
-                    }
-                }
-            }
-        })
+        updateList()
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, usuarios)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spUsuarios.adapter = adapter
     }
 
     private fun updateList() {
-        val pilotos = pilotoServices.getPilotos()
-        (lvPilotos.adapter as PilotoAdapter).clear()
-        (lvPilotos.adapter as PilotoAdapter).addAll(pilotos)
+        val pilotos = pilotoServices.getPilotosByEquipo(equipo.id)
+        Log.d("Pilotos", pilotos.toString())
+        lvPilotos.adapter =
+            PilotoAdapter(requireActivity(), pilotos, object : PilotoAdapter.OnButtonClickListener {
+                override fun onModificarClick(piloto: Piloto) {
+                    bGuardar.text = "Modificar"
+                    Toast.makeText(
+                        requireContext(),
+                        "Seleccionar piloto ${piloto.apodo}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    pilotoSelected = piloto
+                    etApodo.setText(piloto.apodo)
+                    cbActivo.isChecked = piloto.esta_activo
+
+                    for (i in 0 until usuarios.size) {
+                        if (usuarios[i].id == piloto.usuario_id) {
+                            spUsuarios.setSelection(i)
+                            break
+                        }
+                    }
+                }
+            })
     }
 
     private fun initListeners() {
         fabCrearPiloto.setOnClickListener {
-            Toast.makeText(requireContext(), "Crear piloto", Toast.LENGTH_SHORT).show()
-            pilotoSelected = null
-            etApodo.text.clear()
-            cbActivo.isChecked = true
-            spUsuarios.setSelection(0)
+            clearForm()
+        }
+        bGuardar.setOnClickListener {
+            savePilot()
+        }
+    }
+
+    private fun clearForm() {
+        etApodo.text.clear()
+        cbActivo.isChecked = true
+        spUsuarios.setSelection(0)
+        bGuardar.text = "Crear"
+        pilotoSelected = null
+        Toast.makeText(requireContext(), "Limpiando formulario", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun savePilot() {
+        try {
+            val apodo = etApodo.text.toString()
+            val usuario = spUsuarios.selectedItem as UserSimpleData
+            val activo = cbActivo.isChecked
+            if (pilotoSelected == null) {
+                val newPiloto = NewPiloto(usuario.id, equipo.id, apodo, activo)
+                val result = pilotoServices.createPiloto(newPiloto)
+                if (result) {
+                    Toast.makeText(requireContext(), "Piloto creado", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Error al crear piloto", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                val updatedPiloto = Piloto(
+                    pilotoSelected!!.id,
+                    usuario.id,
+                    equipo.id,
+                    apodo,
+                    activo,
+                    usuario
+                )
+                val result = pilotoServices.updatePiloto(updatedPiloto)
+                if (result) {
+                    Toast.makeText(requireContext(), "Piloto modificado", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al modificar piloto",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+            clearForm()
+            updateList()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al guardar piloto", Toast.LENGTH_SHORT).show()
         }
     }
 
