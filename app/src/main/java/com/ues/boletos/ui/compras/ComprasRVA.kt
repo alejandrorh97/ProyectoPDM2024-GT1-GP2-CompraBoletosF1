@@ -1,6 +1,7 @@
 package com.ues.boletos.ui.compras
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,12 @@ class ComprasRVA: RecyclerView.Adapter<ComprasRVA.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComprasRVA.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_detalle_compra, parent, false)
-        return ComprasRVA.ViewHolder(view)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ComprasRVA.ViewHolder, position: Int) {
         val modelo = datos[position]
+        Log.i("ComprasRVA", "onBindViewHolder: $position")
         holder.bind(modelo)
     }
 
@@ -31,6 +33,7 @@ class ComprasRVA: RecyclerView.Adapter<ComprasRVA.ViewHolder>() {
     }
 
     fun setDatos(datosNuevos: List<CompraResponse>) {
+        Log.i("ComprasRVA", "setDatos: ${datosNuevos.size}")
         datos.clear()
         datos.addAll(datosNuevos)
         notifyDataSetChanged()
