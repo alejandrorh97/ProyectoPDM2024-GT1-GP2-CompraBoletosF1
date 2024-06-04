@@ -15,7 +15,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.ues.boletos.DBHelper
 import com.ues.boletos.R
-import com.ues.boletos.models.Carrera
+import com.ues.boletos.api.CarreraServiceApi
 import com.ues.boletos.models.Circuito
 import com.ues.boletos.models.NewCarrera
 import com.ues.boletos.services.CarreraService
@@ -37,6 +37,7 @@ class CrearCarreraFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var dbHelper: DBHelper
+    private lateinit var carreraApiService: CarreraServiceApi
     private lateinit var carreraService: CarreraService
     private lateinit var circuitoService: CircuitoService
     private lateinit var spCircuito: Spinner
@@ -45,6 +46,7 @@ class CrearCarreraFragment : Fragment() {
     private var hora: String? = null
     private var fecha: String? = null
     private lateinit var etVueltas: EditText
+    private lateinit var etNombre: EditText
     private lateinit var bGuardar: Button
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -55,6 +57,7 @@ class CrearCarreraFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         dbHelper = DBHelper(requireContext())
+        carreraApiService = CarreraServiceApi(requireContext())
         carreraService = CarreraService(dbHelper)
         circuitoService = CircuitoService(dbHelper)
     }
@@ -75,6 +78,7 @@ class CrearCarreraFragment : Fragment() {
         bFecha = view.findViewById(R.id.bFecha)
         bHora = view.findViewById(R.id.bHora)
         etVueltas = view.findViewById(R.id.etVueltas)
+        etNombre = view.findViewById(R.id.etNombre)
         bGuardar = view.findViewById(R.id.bGuardar)
     }
     private fun initUI() {
@@ -126,6 +130,7 @@ class CrearCarreraFragment : Fragment() {
         try {
             val circuito = spCircuito.selectedItem as Circuito
             val vueltas = etVueltas.text.toString().toInt()
+            val nombre = etNombre.text.toString()
             val carrera = NewCarrera(
                 circuitoId = circuito.id,
                 fecha = "$fecha $hora",
@@ -134,6 +139,7 @@ class CrearCarreraFragment : Fragment() {
             val result = carreraService.insertCarrera(carrera)
             if (result) {
                 Toast.makeText(requireContext(), "Carrera creada", Toast.LENGTH_SHORT).show()
+                carreraApiService.guardarCarrera(nombre, circuito.nombre, carrera.fecha, circuito.ubicacion)
                 requireActivity().supportFragmentManager.popBackStack()
             } else {
                 Toast.makeText(requireContext(), "Error al crear carrera", Toast.LENGTH_SHORT)
