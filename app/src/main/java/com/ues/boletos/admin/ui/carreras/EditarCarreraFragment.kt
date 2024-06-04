@@ -47,6 +47,7 @@ class EditarCarreraFragment : Fragment() {
     private lateinit var bGuardar: Button
     private val calendar: Calendar = Calendar.getInstance()
     private lateinit var carrera: Carrera
+    private lateinit var bAlertDelete: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +93,7 @@ class EditarCarreraFragment : Fragment() {
         etVueltas = view.findViewById(R.id.etVueltas)
         bGuardar = view.findViewById(R.id.bGuardar)
         bHora = view.findViewById(R.id.bHora)
+        bAlertDelete = view.findViewById(R.id.bAlertDelete)
     }
 
     private fun initUI() {
@@ -117,6 +119,18 @@ class EditarCarreraFragment : Fragment() {
         bFecha.setOnClickListener { showDatePickerDialog() }
         bGuardar.setOnClickListener { saveCarrera() }
         bHora.setOnClickListener { showTimePickerDialog() }
+        bAlertDelete.setOnClickListener {
+            android.app.AlertDialog.Builder(requireContext())
+                .setTitle("Eliminar carrera")
+                .setMessage("¿Está seguro que desea eliminar la carrera?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    deleteCarrera()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
     }
 
     private fun showDatePickerDialog() {
@@ -146,6 +160,21 @@ class EditarCarreraFragment : Fragment() {
             true
         )
         timePicker.show()
+    }
+
+    private fun deleteCarrera() {
+        try {
+            val result = carreraService.deleteCarrera(carrera.id)
+            if (result) {
+                Toast.makeText(requireContext(), "Carrera eliminada correctamente", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
+            } else {
+                Toast.makeText(requireContext(), "Error al eliminar la carrera", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al eliminar la carrera", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveCarrera() {

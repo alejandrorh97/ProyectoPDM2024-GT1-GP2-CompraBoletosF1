@@ -54,6 +54,7 @@ class PilotosFragment : Fragment() {
     private lateinit var userService: UserService
     private lateinit var usuarios: ArrayList<UserSimpleData>
     private lateinit var bGuardar: Button
+    private lateinit var bAlertDelete: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +104,7 @@ class PilotosFragment : Fragment() {
         spUsuarios = view.findViewById(R.id.spUsuarios)
         cbActivo = view.findViewById(R.id.cbActivo)
         bGuardar = view.findViewById(R.id.bGuardar)
+        bAlertDelete = view.findViewById(R.id.bAlertDelete)
     }
 
     private fun initUI() {
@@ -111,6 +113,7 @@ class PilotosFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, usuarios)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spUsuarios.adapter = adapter
+        bAlertDelete.visibility = View.GONE
     }
 
     private fun updateList() {
@@ -120,6 +123,7 @@ class PilotosFragment : Fragment() {
             PilotoAdapter(requireActivity(), pilotos, object : PilotoAdapter.OnButtonClickListener {
                 override fun onModificarClick(piloto: Piloto) {
                     bGuardar.text = "Modificar"
+                    bAlertDelete.visibility = View.VISIBLE
                     Toast.makeText(
                         requireContext(),
                         "Seleccionar piloto ${piloto.apodo}",
@@ -146,6 +150,9 @@ class PilotosFragment : Fragment() {
         bGuardar.setOnClickListener {
             savePilot()
         }
+        bAlertDelete.setOnClickListener {
+            deletePilot()
+        }
     }
 
     private fun clearForm() {
@@ -154,7 +161,29 @@ class PilotosFragment : Fragment() {
         spUsuarios.setSelection(0)
         bGuardar.text = "Crear"
         pilotoSelected = null
+        bAlertDelete.visibility = View.GONE
         Toast.makeText(requireContext(), "Limpiando formulario", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun deletePilot() {
+        try {
+            if (pilotoSelected != null) {
+                val result = pilotoServices.deletePiloto(pilotoSelected!!.id)
+                if (result) {
+                    Toast.makeText(requireContext(), "Piloto eliminado", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Error al eliminar piloto", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                clearForm()
+                updateList()
+            } else {
+                Toast.makeText(requireContext(), "No se ha seleccionado un piloto", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error al eliminar piloto", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun savePilot() {
