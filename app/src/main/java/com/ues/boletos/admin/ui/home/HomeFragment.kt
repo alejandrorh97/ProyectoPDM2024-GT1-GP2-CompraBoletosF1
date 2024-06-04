@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.ues.boletos.databinding.FragmentHomeBinding
+import com.ues.boletos.databinding.FragmentHomeCarrerasBinding
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeCarrerasBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeCarrerasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root

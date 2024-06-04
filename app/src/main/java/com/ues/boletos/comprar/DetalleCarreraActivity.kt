@@ -7,11 +7,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ues.boletos.R
-import com.ues.boletos.api.BaseService
+import com.ues.boletos.api.ApiClient
 import com.ues.boletos.api.CarreraApi
 import com.ues.boletos.api.GenericShowResponse
+import com.ues.boletos.api.TokenManager
 import com.ues.boletos.api.responses.CarreraEntradaShowResponse
-import com.ues.boletos.api.responses.CarreraResponse
 import com.ues.boletos.api.responses.CarreraShowResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,8 +25,12 @@ class DetalleCarreraActivity: AppCompatActivity() {
         setContentView(R.layout.activity_detalle_carrera_usuario)
         val id = intent.getIntExtra("ID", 0)
 
-        val apiService = BaseService.instance.create(CarreraApi::class.java)
-        val call = apiService.getCarrera(id)
+//        val apiService = BaseService.instance.create(CarreraApi::class.java)
+//        val call = apiService.getCarrera(id)
+
+        val tokenManager = TokenManager(this)
+        val apiClient = ApiClient(tokenManager)
+        val call = apiClient.createService<CarreraApi>().getCarrera(id)
 
         call.enqueue(object : Callback<GenericShowResponse<CarreraShowResponse>> {
             override fun onResponse(

@@ -1,4 +1,4 @@
-package com.ues.boletos.ui.slideshow
+package com.ues.boletos.ui.perfil
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

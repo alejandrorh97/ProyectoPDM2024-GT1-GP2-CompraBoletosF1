@@ -10,8 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ues.boletos.R
-import com.ues.boletos.api.BaseService
+import com.ues.boletos.api.ApiClient
 import com.ues.boletos.api.CarreraApi
+import com.ues.boletos.api.TokenManager
 import com.ues.boletos.api.responses.BaseApiResponse
 import com.ues.boletos.api.responses.CarreraResponse
 import retrofit2.Call
@@ -19,9 +20,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeFragment : Fragment() {
+
     private lateinit var adapter: CarrerasRVA
     private lateinit var rvCarrera: RecyclerView
-
     private var page = 1
     private var loading = false
 
@@ -30,12 +31,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-
+        Log.d("HomeFragment", "onCreateView")
+        val view = inflater.inflate(R.layout.fragment_home_carreras, container, false)
         this.rvCarrera = view.findViewById(R.id.rvCarrerasUsuario)
         this.rvCarrera.layoutManager = LinearLayoutManager(requireContext())
         this.adapter = CarrerasRVA()
         this.rvCarrera.adapter = this.adapter
+        this.page = 1
+        this.loading = false
 
         cargarDatos()
         addScrollListener()
@@ -49,8 +52,9 @@ class HomeFragment : Fragment() {
 
     private fun cargarDatos() {
         this.loading = true
-        val apiService = BaseService.instance.create(CarreraApi::class.java)
-        val call = apiService.getCarreras(this.page)
+        val tokenManager = TokenManager(requireContext())
+        val apiClient = ApiClient(tokenManager)
+        val call = apiClient.createService<CarreraApi>().getCarreras(this.page)
         call.enqueue(object : Callback<BaseApiResponse<CarreraResponse>> {
             override fun onResponse(
                 call: Call<BaseApiResponse<CarreraResponse>>,

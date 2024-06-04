@@ -10,6 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ues.boletos.api.ApiClient
+import com.ues.boletos.api.LoginApi
+import com.ues.boletos.api.TokenManager
+import com.ues.boletos.api.requests.LoginRequest
 import com.ues.boletos.services.UserService
 
 class LoginActivity : AppCompatActivity() {
@@ -45,22 +49,46 @@ class LoginActivity : AppCompatActivity() {
         bLogin.setOnClickListener {
             val email = etEmail.text.toString()
             val password = etPassword.text.toString()
-            try {
-                if(userService.verificarUsuario(email, password)) {
-                    Toast.makeText(this, "Bienvenido de vuelta!", Toast.LENGTH_SHORT).show()
-                    val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-                    editor.putBoolean("isLoggedIn", true)
-                    editor.putBoolean("isAdmin", userService.isAdmin(email))
-                    editor.apply()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Email y contraseña son requeridos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            val tokenManager = TokenManager(this)
+            val apiClient = ApiClient(tokenManager)
+            val loginRequest: LoginRequest = LoginRequest(email, password)
+            val call = apiClient.createService<LoginApi>().login(loginRequest)
+
+            call.enqueue(object : retrofit2.Callback<com.ues.boletos.api.responses.LoginResponse> {
+                override fun onResponse(
+                    call: retrofit2.Call<com.ues.boletos.api.responses.LoginResponse>,
+                    response: retrofit2.Response<com.ues.boletos.api.responses.LoginResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val loginResponse = response.body()
+                        if (loginResponse != null) {
+                            tokenManager.saveToken(loginResponse.access_token)
+                            val sharedPreferences = getSharedPreferences("compra-boletos-formula-1", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putBoolean("isLoggedIn", true)
+                            editor.putBoolean("isAdmin", loginResponse.is_admin)
+                            editor.apply()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finish()
+                        }
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Credenciales incorrectas", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(
+                    call: retrofit2.Call<com.ues.boletos.api.responses.LoginResponse>,
+                    t: Throwable
+                ) {
+                    Toast.makeText(this@LoginActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                }
+            })
+
         }
         bRegister.setOnClickListener { startActivity(Intent(this, SignupActivity::class.java)) }
     }

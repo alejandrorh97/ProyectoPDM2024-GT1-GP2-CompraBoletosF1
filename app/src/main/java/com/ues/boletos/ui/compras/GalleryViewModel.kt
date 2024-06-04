@@ -1,4 +1,4 @@
-package com.ues.boletos.ui.gallery
+package com.ues.boletos.ui.compras
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setTheme(R.style.SplashTheme)
         checkLoginStatus()
         initUI()
         initComponents()
@@ -60,7 +59,9 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_navigation_drawer)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home_carreras,
+                R.id.nav_home_mis_compras,
+                R.id.nav_home_perfil
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

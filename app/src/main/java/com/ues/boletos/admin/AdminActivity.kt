@@ -30,16 +30,10 @@ class AdminActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.appBarAdmin.toolbar)
 
-//        binding.appBarAdmin.fabCrearCarrera.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .setAnchorView(R.id.fabCrearCarrera).show()
-//        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_admin)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_carreras, R.id.nav_circuitos,R.id.nav_equipos

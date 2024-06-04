@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_home_perfil">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_home_carreras"
         android:name="com.ues.boletos.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="Carreras"
+        tools:layout="@layout/fragment_home_carreras" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.ues.boletos.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_home_mis_compras"
+        android:name="com.ues.boletos.ui.compras.ComprasFragment"
+        android:label="Mis compras"
+        tools:layout="@layout/fragment_home_mis_carreras" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.ues.boletos.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_home_perfil"
+        android:name="com.ues.boletos.ui.perfil.PerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_home_perfil" />
 </navigation>

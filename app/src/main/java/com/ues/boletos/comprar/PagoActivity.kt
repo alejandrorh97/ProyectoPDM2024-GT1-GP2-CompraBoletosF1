@@ -7,9 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.ues.boletos.R
-import com.ues.boletos.api.BaseService
+import com.ues.boletos.api.ApiClient
 import com.ues.boletos.api.ComprarApi
 import com.ues.boletos.api.GenericResponse
+import com.ues.boletos.api.TokenManager
 import com.ues.boletos.api.requests.CompraEntradaRequest
 import com.ues.boletos.api.requests.CompraRequest
 import com.ues.boletos.api.requests.MetodoPagoRequest
@@ -32,8 +33,9 @@ class PagoActivity: AppCompatActivity() {
 
         btnPagar.setOnClickListener {
             val compraRequest = getDetalleCompraRequest(detalleCompra)
-            val compraService: ComprarApi = BaseService.instance.create(ComprarApi::class.java)
-            val call = compraService.comprar(compraRequest)
+            val tokenManager = TokenManager(this)
+            val apiClient = ApiClient(tokenManager)
+            val call = apiClient.createService<ComprarApi>().comprar(compraRequest)
 
             call.enqueue(object : Callback<GenericResponse> {
                 override fun onResponse(

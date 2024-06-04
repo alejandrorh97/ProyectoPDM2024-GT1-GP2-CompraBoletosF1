@@ -16,6 +16,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.ues.boletos.api.ApiClient
+import com.ues.boletos.api.LoginApi
+import com.ues.boletos.api.TokenManager
+import com.ues.boletos.api.requests.LoginRequest
+import com.ues.boletos.api.requests.RegistrarRequest
 import com.ues.boletos.models.NewUser
 import com.ues.boletos.services.UserService
 import java.util.Calendar
@@ -139,29 +144,51 @@ class SignupActivity : AppCompatActivity() {
             return
         }
 
-        if (userService.existeUsuario(email)) {
-            Toast.makeText(this, "El usuario ya existe", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val result = userService.insertUsuario(
-            NewUser(
-                email,
-                nombre,
-                apellido,
-                telefono,
-                fechaNacimiento!!,
-                sexo,
-                password
-            )
+        val tokenManager = TokenManager(this)
+        val apiClient = ApiClient(tokenManager)
+        val registrarRequest: RegistrarRequest = RegistrarRequest(
+            nombre,
+            apellido,
+            email,
+            password,
+            fechaNacimiento.toString(),
+            telefono,
+            this.getGenero(sexo)
         )
+        val call = apiClient.createService<LoginApi>().registrar(registrarRequest)
 
-        if (result) {
-            Toast.makeText(this, "Cuenta creada!", Toast.LENGTH_SHORT).show()
-//            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show()
+        call.enqueue(object : retrofit2.Callback<com.ues.boletos.api.responses.LoginResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<com.ues.boletos.api.responses.LoginResponse>,
+                response: retrofit2.Response<com.ues.boletos.api.responses.LoginResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        Toast.makeText(this@SignupActivity, "Cuenta creada!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this@SignupActivity, "Error al registrar", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(
+                call: retrofit2.Call<com.ues.boletos.api.responses.LoginResponse>,
+                t: Throwable
+            ) {
+                Toast.makeText(this@SignupActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun getGenero(genero: String): String {
+        if (genero == "Hombre") {
+            return "hombre"
         }
+        if (genero == "Mujer") {
+            return "mujer"
+        }
+        return "otro"
     }
 }
